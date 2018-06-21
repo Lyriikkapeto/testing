@@ -1,4 +1,4 @@
---"Rathore bin Laden"
+
 function love.conf(t)
        -- t.identity = nil                    -- The name of the save directory (string)
     t.version = "0.10.2"                -- The LÖVE version this game was made for (string)
@@ -7,7 +7,7 @@ function love.conf(t)
     t.externalstorage = false           -- True to save files (and read from the save directory) in external storage on Android (boolean) 
     t.gammacorrect = false              -- Enable gamma-correct rendering, when supported by the system (boolean)
  
-    t.window.title = "The Legend Of Ellivuori: Islamisation"         -- The window title (string)
+    t.window.title = "Test"         -- The window title (string)
     t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
     t.window.width = 1200            -- The window width (number)
     t.window.height = 650             -- The window height (number)
