@@ -3,27 +3,24 @@
 function love.load()
 
 	map = {
-{4,3,3,3,3,3,4,4,3,4,4,4,8,8,8,8,8,8,8,8,8,8,8,8,8},
-{4,2,2,2,2,2,3,3,8,3,3,4,6,6,6,6,6,6,6,6,6,6,6,6,8},
-{4,2,2,2,2,2,2,6,6,6,6,4,6,6,6,6,6,6,6,6,6,6,6,6,8},
-{4,2,2,2,2,2,2,6,6,6,6,4,6,6,6,6,6,6,8,6,6,6,6,6,8},
-{3,3,3,3,3,3,4,6,6,6,6,4,0,0,0,0,6,0,0,0,0,0,0,6,8},
-{0,0,0,0,0,0,4,4,8,4,4,4,0,6,0,6,0,8,6,0,0,6,0,0,8},
-{0,4,3,3,3,3,3,3,6,4,4,4,0,0,0,0,6,0,0,0,6,8,0,0,8},
-{0,4,2,5,5,5,5,2,2,2,4,0,0,0,0,6,0,0,0,0,0,0,0,0,8},
-{0,4,2,5,5,5,5,2,2,2,4,0,0,5,0,0,0,6,5,0,0,6,0,0,8},
-{0,4,2,5,5,5,5,2,2,2,4,0,0,0,0,0,0,0,0,0,0,8,0,0,8},
-{0,4,2,4,3,3,3,3,3,3,3,0,0,0,0,0,6,0,0,0,6,0,0,0,8},
-{0,4,2,2,6,6,6,6,6,6,6,6,6,6,6,0,0,6,0,8,0,0,7,0,8},
-{0,2,2,2,6,6,6,6,6,6,6,6,6,6,6,0,0,0,0,0,0,0,0,0,8},
-{1,3,3,3,3,3,3,3,3,3,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
-{1,3,3,3,3,3,3,3,3,3,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
-{1,3,3,3,3,3,3,3,3,3,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8}}
+{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
+{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}}
 	tileset = love.graphics.newImage("tileset.png")
-	ts=32
-	mw=16
-	mh=5
-	quads = {}
+	aseet = love.graphics.newImage("ase materiaalit/aselista.png")
+	ts=32 --tilen koko
+	quads = {} --taulukko quadeista eli tileistä
 	quads[0] = love.graphics.newQuad(ts*0, 0, ts, ts, tileset:getDimensions())--tyhjyys
 	quads[1] = love.graphics.newQuad(ts*8, 0, ts, ts, tileset:getDimensions())--tiiliseinä
 	quads[2] = love.graphics.newQuad(ts*1, 0, ts, ts, tileset:getDimensions())--maa
@@ -33,45 +30,97 @@ function love.load()
 	quads[6] = love.graphics.newQuad(ts*0, ts*20, ts, ts, tileset:getDimensions())--nurmikko
 	quads[7] = love.graphics.newQuad(448, 443, ts, ts, tileset:getDimensions())--tyyppi
 	quads[8] = love.graphics.newQuad(ts*4, ts*20, ts, ts, tileset:getDimensions())--oksa
-	allowed = {[2] = true, [1]=false, [3]=false, [4]=false, [5]=true, [6]=true, [7]=false, [8]=false, [0]=true}
-	heads = {}
+	heads = {}--lataa tikkuukon päät
 	for i=1, 4 do
-	heads[i] = love.graphics.newQuad(ts*(10+i), 0, ts, ts, tileset:getDimensions())
-	heads[i+0.5] = love.graphics.newQuad(ts*(10+i), 0, ts, ts-10, tileset:getDimensions())
+		heads[i] = love.graphics.newQuad(ts*(10+i), 0, ts, ts, tileset:getDimensions())
 	end
-	camera = love.graphics.newSpriteBatch(tileset, mw*mh)
-	camerax = 1
-	cameray = 1
-	updatecamera()
+	allowed = {[2] = true, [1]=false, [3]=false, [4]=false, [5]=true, [6]=true, [7]=false, [8]=false, [0]=true}
+	px, py = 3, 3 --pelaajan x ja y tileissä
+	opx, opy = 3, 3 --muuttujat jotka tallentaa pelaajan position liikkumisen ajaksi
+--älä välitä 
+	ylos=4
+	vasen=2
+	alas=1
+	oikea=3
+--suuntien numero koodit
+suunta=alas
+timer=true--onko ajastus mennyt yli
+counter=0 --laskee pikseletä kävelyssä
 end
-
-function updatecamera()
-camera:clear()
-  for x=0, mw do
-    for y=0, mh do
-	if map[y+cameray] ~=nil and map[y+cameray][x+camerax]~=nil then--look for fix
-	--print(y+cameray.." "..x+camerax)
-      camera:add(quads[map[y+cameray][x+camerax]], x*ts, y*ts)
-    end
-  end
-  end
-  camera:flush()
-end--x+camerax][y+cameray]],
 
 function love.draw()
 
-love.graphics.draw(camera)
+	for y,xtaulukko in pairs(map) do --Piirtää mapin
+		for x,quadnumero in pairs(xtaulukko) do
+			love.graphics.draw(tileset, quads[quadnumero], x*ts, y*ts)
+		end
+	end
+	love.graphics.draw(tileset, heads[suunta], px*ts, py*ts)
+
 end
 
 function love.update(dt)
+
+	if love.keyboard.isDown("a") and timer then--timer on sitä varten ettei kävele liian lujaa
+		suunta=vasen
+		if allowed[map[py][px-1]] then --tarkastaa onko vasemman puolimmainen tile sallittu
+			opx=px
+			timer=false
+		else
+		end
+	elseif love.keyboard.isDown("d") and timer then
+			suunta=oikea
+			opx=px
+		if allowed[map[py][px+1]] then --tarkastaa onko vasemman puolimmainen tile sallittu
+			timer=false
+		end
+	elseif love.keyboard.isDown("w") and timer then
+			suunta=ylos
+			opy=py
+		if allowed[map[py-1][px]] then --tarkastaa onko vasemman puolimmainen tile sallittu
+			timer=false
+		end
+	elseif love.keyboard.isDown("s") and timer then
+			suunta=alas
+			opy=py
+		if allowed[map[py+1][px]] then --tarkastaa onko vasemman puolimmainen tile sallittu
+			timer=false
+		end
+	end
+	if not timer then
+		if suunta==vasen then
+			px=px-0.2
+			if px<=opx-1 then
+			timer=true
+			px=opx-1
+			end
+		end
+		if suunta==oikea then
+			px=px+0.2
+			if px>=opx+1 then
+			timer=true
+			px=opx+1
+			end
+		end
+		if suunta==ylos then
+			py=py-0.2
+			if py<=opy-1 then
+				timer=true
+				py=opy-1
+			else
+			end
+		end
+		if suunta==alas then
+			py=py+0.2
+			if py>=opy+1 then
+				timer=true
+				py=opy+1
+			else
+			end
+		end
+	end
 end
 function love.focus(bool)
-end
-function movecamera(x, y)
-
-camerax = camerax+x
-cameray = cameray+y
-updatecamera()
 end
 
 function love.keypressed( key, unicode )
@@ -83,6 +132,7 @@ function love.keyreleased( key, unicode )
 end
 
 function love.mousepressed( x, y, button )
+print(px, py)
 print(x.." "..y)
 end
 
@@ -91,4 +141,3 @@ end
 
 function love.quit()
 end
-return info
