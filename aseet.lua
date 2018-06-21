@@ -69,7 +69,7 @@ Vz61.setTyyli("Konepistooli")
 
 Vz58 = uusiase(7, 30, 0.2, 1.5, 8, 1, 0, 1 )
 Vz58.setTyyli("Rynnäkkökivääri")
-Vz58.setQuad(104,1,49,32)
+Vz58.setQuad(love.graphics.newQuad(104,1,49,32))
 
 TT33 = uusiase(5, 8, 0.6, 0.8, 6, 1, 0, 1)
 TT33.setTyyli("Pistooli")
