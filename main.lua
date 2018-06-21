@@ -18,7 +18,6 @@ function love.load()
 {1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}}
 	tileset = love.graphics.newImage("tileset.png")
-	aseet = love.graphics.newImage("ase materiaalit/aselista.png")
 	ts=32 --tilen koko
 	quads = {} --taulukko quadeista eli tileistä
 	quads[0] = love.graphics.newQuad(ts*0, 0, ts, ts, tileset:getDimensions())--tyhjyys
