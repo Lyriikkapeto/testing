@@ -1,4 +1,4 @@
-
+require("aseet")
 
 function love.load()
 
@@ -65,26 +65,33 @@ function love.update(dt)
 		suunta=vasen
 		if allowed[map[py][px-1]] then --tarkastaa onko vasemman puolimmainen tile sallittu
 			opx=px
+		if not love.keyboard.isDown("lshift") then
 			timer=false
-		else
+		end
 		end
 	elseif love.keyboard.isDown("d") and timer then
 			suunta=oikea
 			opx=px
 		if allowed[map[py][px+1]] then --tarkastaa onko vasemman puolimmainen tile sallittu
+			if not love.keyboard.isDown("lshift") then
 			timer=false
+			end
 		end
 	elseif love.keyboard.isDown("w") and timer then
 			suunta=ylos
 			opy=py
 		if allowed[map[py-1][px]] then --tarkastaa onko vasemman puolimmainen tile sallittu
+			if not love.keyboard.isDown("lshift") then
 			timer=false
+			end
 		end
 	elseif love.keyboard.isDown("s") and timer then
 			suunta=alas
 			opy=py
 		if allowed[map[py+1][px]] then --tarkastaa onko vasemman puolimmainen tile sallittu
+			if not love.keyboard.isDown("lshift") then
 			timer=false
+			end
 		end
 	end
 	if not timer then

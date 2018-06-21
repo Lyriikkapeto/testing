@@ -1,17 +1,18 @@
 function inv()
     inv={}
-    function setRynkky(ase)
+    function inv.setRynkky(ase)
         inv.rynkky = ase
     end
-    function setPistooli(ase)
+    function inv.setPistooli(ase)
         inv.pistooli = ase
     end
-    function setKonepistooli(ase)
+    function inv.setKonepistooli(ase)
         inv.konepistooli = ase
     end
-    function kranaatti(ase)
+    function inv.kranaatti(ase)
         inv.kranaatti = ase
     end
+	return inv
 end
 
 
@@ -28,21 +29,20 @@ mt.__lt = function(a,b)
 end
 setmetatable(ase, mt)
 ---------------------
-local ase.tyyli
 function ase.setTyyli(tyyli)
     ase.tyyli=tyyli
 end
 function ase.vertaa(ase)
 return mt.rank>getmetatable(ase).rank
 end
-local ase.damage = dmg
-local ase.kap = kapas --kapasiteetti
-local ase.lipas = kapas
-local ase.rps = nopeus
-local ase.reloadtime = rt
-local ase.range = rng
-local ase.velocity = vel
-local ase.radius = rad
+ase.damage = dmg
+ase.kap = kapas --kapasiteetti
+ase.lipas = kapas
+ase.rps = nopeus
+ase.reloadtime = rt
+ase.range = rng
+ase.velocity = vel
+ase.radius = rad
 ase.shoot = function()
     if ase.lipas>0 then
         ase.lipas=ase.lipas-1
@@ -51,6 +51,7 @@ ase.shoot = function()
         ase.lipas=ase.kap
     end
     end
+return ase
 end
 
 --damage, kapasiteetti, nopeus, reload aika, range, vel, rank, rad
