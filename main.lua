@@ -52,7 +52,7 @@ return ts*x, ts*y
 end
 
 function love.draw()
-
+	
 	for y,xtaulukko in pairs(map) do --Piirtää mapin
 		for x,quadnumero in pairs(xtaulukko) do
 			love.graphics.draw(tileset, quads[quadnumero], x*ts, y*ts)
@@ -60,16 +60,20 @@ function love.draw()
 	end
 	
 	love.graphics.draw(tileset, heads[suunta], px*ts, py*ts)
-	if suunta==oikea then
-	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+16, 0, 0.5, 0.5)
+	if inventory.getBest() then --nil eli tyhjä arvo laskeutuu falseksi, jolloin tämä tarkastaa onko asetta olemassa
+	inventory.getBest().printMag()
+	if suunta==oikea then --piirtää aseet riippuen suunnasta
+	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+18, 0, 0.5, 0.5)
 	elseif suunta==vasen or suunta==alas then
-	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+16, 0, -0.5, 0.5)
+	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+18, 0, -0.5, 0.5) --riippuen suunnata vaihtaa aseen skaalaa
 	end
-
+	end
+	if throwsign then
+		love.graphics.print(text, 5*ts, 16*ts, 0, 2, 2)
+	end
 end
 
 function love.update(dt)
-
 	if love.keyboard.isDown("a") and timer then--timer on sitä varten ettei kävele liian lujaa
 		suunta=vasen
 		if allowed[map[py][px-1]] then --tarkastaa onko vasemman puolimmainen tile sallittu
@@ -136,13 +140,14 @@ function love.update(dt)
 		end
 	end
 
-
-end
+	end
 function love.focus(bool)
 end
 
 function love.keypressed( key, unicode )
-
+	if key=="space" then
+		inventory.getBest().shoot()
+	end
 end
 
 

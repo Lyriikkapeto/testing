@@ -61,16 +61,34 @@ ase.damage = dmg
 ase.kap = kapas --kapasiteetti
 ase.lipas = kapas
 ase.rps = nopeus
+ase.storage=5--lippaiden määrä
 ase.reloadtime = rt
 ase.range = rng
 ase.velocity = vel
+ase.counter=0
 ase.radius = rad
+ase.printMag=function()
+	love.graphics.print(ase.lipas.."/"..ase.kap, 28*ts, 5*ts, 0, 2, 2)
+end
 ase.shoot = function()
     if ase.lipas>0 then
         ase.lipas=ase.lipas-1
     else
-        love.timer.sleep(reloadtime)
-        ase.lipas=ase.kap
+	throwsign=true
+	text="Keep pressing space to reload: "..(ase.counter/2).."/"..(ase.kap/4)
+	if ase.storage>0 then
+		ase.counter = ase.counter+2
+		if ase.counter>=ase.kap then
+			ase.counter=0
+			ase.lipas=ase.kap
+			throwsign=false
+			text=nil
+			ase.storage=ase.storage-1
+		end
+	else
+		print("out of ammo")
+		ase = nil
+	end
     end
     end
 return ase
