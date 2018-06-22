@@ -1,19 +1,33 @@
 aseet = love.graphics.newImage("ase materiaalit/aselista.png")
 
 function inv()
-    inv={}
+   local inv={}
     function inv.setRynkky(ase)
         inv.rynkky = ase
     end
+	function inv.getRynkky()
+		return inv.rynkky
+	end
     function inv.setPistooli(ase)
         inv.pistooli = ase
     end
+	function inv.getPistooli()
+		return inv.pistooli
+	end
     function inv.setKonepistooli(ase)
         inv.konepistooli = ase
     end
-    function inv.kranaatti(ase)
+    function inv.setKranaatti(ase)
         inv.kranaatti = ase
     end
+	function inv.getBest()--listaa käytettävissä olevat aseet
+		if inv.rynkky~=nil then
+			return inv.rynkky
+		end
+		if inv.pistooli~=nil then
+			return inv.pistooli
+		end
+	end
 	return inv
 end
 
@@ -22,9 +36,12 @@ end
 
 
 function uusiase(dmg, kapas, nopeus, rt, rng, vel, rank, rad)
-ase = {}
+local ase = {}
 function ase.setQuad(qd)
 ase.quad=qd
+end
+function ase.getQuad()
+return ase.quad
 end
 -----Metataulukko aseiden vertailuun
 local mt = {}

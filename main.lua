@@ -1,7 +1,8 @@
 require("aseet")
 
-function love.load()
 
+function love.load()
+	inventory = OletusInv
 	map = {
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 {1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
@@ -46,6 +47,9 @@ suunta=alas
 timer=true--onko ajastus mennyt yli
 counter=0 --laskee pikseletä kävelyssä
 end
+function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
+return ts*x, ts*y
+end
 
 function love.draw()
 
@@ -54,7 +58,13 @@ function love.draw()
 			love.graphics.draw(tileset, quads[quadnumero], x*ts, y*ts)
 		end
 	end
+	
 	love.graphics.draw(tileset, heads[suunta], px*ts, py*ts)
+	if suunta==oikea then
+	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+16, 0, 0.5, 0.5)
+	elseif suunta==vasen or suunta==alas then
+	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+16, 0, -0.5, 0.5)
+	end
 
 end
 
@@ -125,6 +135,8 @@ function love.update(dt)
 			end
 		end
 	end
+
+
 end
 function love.focus(bool)
 end
