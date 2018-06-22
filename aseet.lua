@@ -74,6 +74,7 @@ end
 ase.shoot = function()
     if ase.lipas>0 then
         ase.lipas=ase.lipas-1
+		table.insert(bullets, {px, py, suunta})
     else
 	throwsign=true
 	text="Keep pressing space to reload: "..(ase.counter/2).."/"..(ase.kap/4)

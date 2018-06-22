@@ -1,6 +1,5 @@
 require("aseet")
 
-
 function love.load()
 	inventory = OletusInv
 	map = {
@@ -19,6 +18,7 @@ function love.load()
 {1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}}
 	tileset = love.graphics.newImage("tileset.png")
+	luoti=love.graphics.newImage("Patruuna.png")
 	ts=32 --tilen koko
 	quads = {} --taulukko quadeista eli tileistä
 	quads[0] = love.graphics.newQuad(ts*0, 0, ts, ts, tileset:getDimensions())--tyhjyys
@@ -51,7 +51,21 @@ end
 function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
 return ts*x, ts*y
 end
-
+function getNext(x,y, suunta)
+	if suunta==oikea then
+		if allowed[map[y][x+1]] then return true end
+	end
+	if suunta==vasen then
+		if allowed[map[y][x-1]] then return true end
+	end
+	if suunta==ylos then
+		if allowed[map[y-1][x]] then return true end
+	end
+	if suunta==alas then
+		if allowed[map[y+1][x]] then return true end
+	end
+return false
+end
 function love.draw()
 	
 	for y,xtaulukko in pairs(map) do --Piirtää mapin
@@ -70,7 +84,19 @@ function love.draw()
 	end
 	end
 	for i,v in pairs(bullets) do
-		
+		love.graphics.draw(luoti, v[1]*ts, v[2]*ts) --v[1]=x v[2]=y v[3]=suunta
+		v[1]=math.floor(v[1])
+		v[2]=math.floor(v[2])
+		print(v[1], v[2], v[3])
+			if getNext(v[1], v[2], v[3]) then
+				if v[3]==oikea then v[1]=v[1]+1
+				elseif v[3]==vasen then v[1]=v[1]-1
+				elseif v[3]==ylos then v[2]=v[2]-1
+				elseif v[3]==alas then v[2]=v[2]+1 end
+			else
+				print("deleted")
+				bullets[i]=nil
+			end
 	end
 	if throwsign then
 		love.graphics.print(text, 5*ts, 16*ts, 0, 2, 2)
