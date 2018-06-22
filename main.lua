@@ -46,6 +46,7 @@ function love.load()
 suunta=alas
 timer=true--onko ajastus mennyt yli
 counter=0 --laskee pikseletä kävelyssä
+bullets={}
 end
 function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
 return ts*x, ts*y
@@ -67,6 +68,9 @@ function love.draw()
 	elseif suunta==vasen or suunta==alas then
 	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+18, 0, -0.5, 0.5) --riippuen suunnata vaihtaa aseen skaalaa
 	end
+	end
+	for i,v in pairs(bullets) do
+		
 	end
 	if throwsign then
 		love.graphics.print(text, 5*ts, 16*ts, 0, 2, 2)
