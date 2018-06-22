@@ -60,7 +60,7 @@ function love.draw()
 	end
 	
 	love.graphics.draw(tileset, heads[suunta], px*ts, py*ts)
-	if inventory.getBest() then --nil eli tyhjä arvo laskeutuu falseksi, jolloin tämä tarkastaa onko asetta olemassa
+	if inventory.getBest()~=nil then --tämä tarkastaa onko asetta olemassa
 	inventory.getBest().printMag()
 	if suunta==oikea then --piirtää aseet riippuen suunnasta
 	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+18, 0, 0.5, 0.5)

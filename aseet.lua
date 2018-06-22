@@ -1,5 +1,4 @@
 aseet = love.graphics.newImage("ase materiaalit/aselista.png")
-
 function inv()
    local inv={}
     function inv.setRynkky(ase)
@@ -27,6 +26,7 @@ function inv()
 		if inv.pistooli~=nil then
 			return inv.pistooli
 		end
+			return puukko
 	end
 	return inv
 end
@@ -62,13 +62,14 @@ ase.kap = kapas --kapasiteetti
 ase.lipas = kapas
 ase.rps = nopeus
 ase.storage=5--lippaiden määrä
+ase.setStorage=function(num) ase.storage=num end
 ase.reloadtime = rt
 ase.range = rng
 ase.velocity = vel
 ase.counter=0
 ase.radius = rad
 ase.printMag=function()
-	love.graphics.print(ase.lipas.."/"..ase.kap, 28*ts, 5*ts, 0, 2, 2)
+	love.graphics.print(ase.lipas.."/"..ase.kap.."	 lippaat:"..ase.storage, 28*ts, 5*ts, 0, 2, 2)
 end
 ase.shoot = function()
     if ase.lipas>0 then
@@ -87,7 +88,7 @@ ase.shoot = function()
 		end
 	else
 		print("out of ammo")
-		ase = nil
+		ase = puukko
 	end
     end
     end
@@ -117,5 +118,9 @@ PPsh41 = uusiase(5, 71, 1, 0.2, 6, 1, 1, 1)
 PPsh41.setTyyli("Konepistooli")
 PPsh41.setQuad(love.graphics.newQuad(49,0,51,40, aseet:getDimensions()))
 
+puukko = uusiase(0, 0, 0, 0, 0, 0, 0, 0)
+puukko.setTyyli("nil")
+puukko.setQuad(love.graphics.newQuad(200,0,3,3, aseet:getDimensions()))
+puukko.setStorage(0)
 OletusInv = inv()
 OletusInv.setPistooli(TT33)
