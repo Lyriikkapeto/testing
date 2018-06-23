@@ -206,6 +206,9 @@ function love.keypressed( key, unicode )
 	if key=="m" then--xd
 		table.insert(enemies, monster(100, 6, 6, 0.1))
 	end
+	if key=="r" then
+		inventory.getBest().load()
+	end
 end
 
 

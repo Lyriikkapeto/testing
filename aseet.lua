@@ -1,30 +1,18 @@
 aseet = love.graphics.newImage("ase materiaalit/aselista.png")
 function inv()
    local inv={}
-    function inv.setRynkky(ase)
-        inv.rynkky = ase
+    function inv.setAse(ase)
+        inv[ase.tyyli] = ase
     end
-	function inv.getRynkky()
-		return inv.rynkky
+	function inv.delete(index)
+		inv[index]=nil
 	end
-    function inv.setPistooli(ase)
-        inv.pistooli = ase
-    end
-	function inv.getPistooli()
-		return inv.pistooli
-	end
-    function inv.setKonepistooli(ase)
-        inv.konepistooli = ase
-    end
-    function inv.setKranaatti(ase)
-        inv.kranaatti = ase
-    end
 	function inv.getBest()--listaa käytettävissä olevat aseet
-		if inv.rynkky~=nil then
-			return inv.rynkky
+		if inv["Rynnäkkökivääri"]~=nil then
+			return inv["Rynnäkkökivääri"]
 		end
-		if inv.pistooli~=nil then
-			return inv.pistooli
+		if inv["Pistooli"]~=nil then
+			return inv["Pistooli"]
 		end
 			return puukko
 	end
@@ -35,7 +23,7 @@ end
 
 
 
-function uusiase(dmg, kapas, nopeus, rt, rng, vel, rank, rad)
+function uusiase(kapas)
 local ase = {}
 function ase.setQuad(qd)
 ase.quad=qd
@@ -43,29 +31,15 @@ end
 function ase.getQuad()
 return ase.quad
 end
------Metataulukko aseiden vertailuun
-local mt = {}
-mt.rank=rank
-mt.__lt = function(a,b)
-    return a.rank<b
-end
-setmetatable(ase, mt)
----------------------
 function ase.setTyyli(tyyli)
     ase.tyyli=tyyli
 end
-function ase.vertaa(ase)
-return mt.rank>getmetatable(ase).rank
-end
-ase.damage = dmg
+
 ase.kap = kapas --kapasiteetti
 ase.lipas = kapas
-ase.rps = nopeus
 ase.storage=5--lippaiden määrä
+ase.load=function() ase.lipas=0 end
 ase.setStorage=function(num) ase.storage=num end
-ase.reloadtime = rt
-ase.range = rng
-ase.velocity = vel
 ase.counter=0
 ase.radius = rad
 ase.printMag=function()
@@ -89,7 +63,7 @@ ase.shoot = function()
 		end
 	else
 		print("out of ammo")
-		ase = puukko
+		OletusInv.delete(ase.tyyli)
 	end
     end
     end
@@ -97,32 +71,33 @@ return ase
 end
 
 --damage, kapasiteetti, nopeus, reload aika, range, vel, rank, rad
-FnFal = uusiase(10, 20, 0.2, 1.5, 8, 1, 1)
+FnFal = uusiase(20)
 FnFal.setTyyli("Rynnäkkökivääri")
 FnFal.setQuad(love.graphics.newQuad(0,1,47,39, aseet:getDimensions()))
-
-Vz61 = uusiase(5, 20, 0.6, 1, 5, 1, 0, 1 )
+FnFal.setStorage(1)
+Vz61 = uusiase(20)
 Vz61.setTyyli("Konepistooli")
 
-Vz58 = uusiase(7, 30, 0.2, 1.5, 8, 1, 0, 1 )
+Vz58 = uusiase(30)
 Vz58.setTyyli("Rynnäkkökivääri")
 Vz58.setQuad(love.graphics.newQuad(104,1,49,32, aseet:getDimensions()))
 
-TT33 = uusiase(5, 8, 0.6, 0.8, 6, 1, 0, 1)
+TT33 = uusiase(8)
 TT33.setTyyli("Pistooli")
 TT33.setQuad(love.graphics.newQuad(191,0,31,33, aseet:getDimensions()))
 TT33.setStorage(math.huge)--pistää arvoksi loputtomuuden
-Makarov = uusiase(6.5, 8, 0.6, 0.8, 5, 1, 1, 1)
+Makarov = uusiase(8)
 Makarov.setTyyli("Pistooli")
 Makarov.setQuad(love.graphics.newQuad(157,1,31,34, aseet:getDimensions()))
 
-PPsh41 = uusiase(5, 71, 1, 0.2, 6, 1, 1, 1)
+PPsh41 = uusiase(71)
 PPsh41.setTyyli("Konepistooli")
 PPsh41.setQuad(love.graphics.newQuad(49,0,51,40, aseet:getDimensions()))
 
-puukko = uusiase(0, 0, 0, 0, 0, 0, 0, 0)
+puukko = uusiase(0)
 puukko.setTyyli("nil")
 puukko.setQuad(love.graphics.newQuad(200,0,3,3, aseet:getDimensions()))
 puukko.setStorage(0)
 OletusInv = inv()
-OletusInv.setPistooli(TT33)
+OletusInv.setAse(FnFal)
+OletusInv.setAse(TT33)
