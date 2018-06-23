@@ -1,22 +1,9 @@
 require("aseet")
 require("enemy")
+require("maps")
 function love.load()
 	inventory = OletusInv
-	map = {
-{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1},
-{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}}
+	map = defmap --katso maps.lua
 	tileset = love.graphics.newImage("tileset.png")
 	luoti=love.graphics.newImage("Patruuna.png")
 	ts=32 --tilen koko
@@ -30,6 +17,7 @@ function love.load()
 	quads[6] = love.graphics.newQuad(ts*0, ts*20, ts, ts, tileset:getDimensions())--nurmikko
 	quads[7] = love.graphics.newQuad(448, 443, ts, ts, tileset:getDimensions())--tyyppi
 	quads[8] = love.graphics.newQuad(ts*4, ts*20, ts, ts, tileset:getDimensions())--oksa
+	quads[9] = love.graphics.newQuad(320, 416, ts, ts, tileset:getDimensions())--harmaa
 	heads = {}--lataa tikkuukon päät
 	for i=1, 4 do
 		heads[i] = love.graphics.newQuad(ts*(10+i), 0, ts, ts, tileset:getDimensions())
@@ -54,6 +42,7 @@ end
 function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
 return ts*x, ts*y
 end
+
 function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
 	if suunta==oikea then
 		if allowed[map[y][x+1]] then return true end
@@ -69,7 +58,15 @@ function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
 	end
 return false
 end
-
+function mapChange(x,y,newmap)
+	if px==x and py==y then
+		map=newmap
+		opx, px=getmetatable(newmap).startpos[1], getmetatable(newmap).startpos[1]
+		opy, py=getmetatable(newmap).startpos[2], getmetatable(newmap).startpos[2]
+		bullets={}
+		enemies=getmetatable(newmap).enemies
+	end
+end
 function love.draw()
 
 	
@@ -88,7 +85,7 @@ function love.draw()
 	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+18, 0, -0.5, 0.5) --riippuen suunnata vaihtaa aseen skaalaa
 	end
 	end
-	
+
 	for i,v in pairs(bullets) do
 		love.graphics.draw(luoti, v[1]*ts, v[2]*ts) --v[1]=x v[2]=y v[3]=suunta
 
@@ -100,7 +97,7 @@ function love.draw()
 				elseif v[3]==ylos then v[2]=v[2]-1
 				elseif v[3]==alas then v[2]=v[2]+1 end
 			else
-				bullets[i]=nil
+				table.remove(bullets, i)
 			end
 		for a,b in pairs(enemies) do --huono ratkaisu. nostaa rankasti kompleksiteettia
 			if b.x==v[1] and b.y==v[2] then
@@ -119,6 +116,13 @@ function love.draw()
 	if throwsign then --piirtää tekstin ala reunaan
 		love.graphics.print(text, 5*ts, 16*ts, 0, 2, 2)
 	end
+	if map==defmap then --Tätä voit jatkaa mapeilla
+		mapChange(23, 3, map2) --eli siis kaks ekaa numeroo on kohta missä vaihtuu mäppi ja sitten tulee map
+		--mapit kannattaa tallentaa maps.lua tiedostoon jotta tästä tulee paljon luettavampi
+	elseif map==map2 then
+		mapChange(23, 3, map3)
+	end
+
 end
 
 function love.update(dt)
@@ -187,8 +191,8 @@ function love.update(dt)
 			end
 		end
 	end
-
-	end
+	
+end
 function love.focus(bool)
 end
 

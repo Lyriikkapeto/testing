@@ -1,4 +1,4 @@
-function enemy(health, x, y, speed) 
+function enemy(health, x, y, speed) --healthilla ei toistaiseksi oo mitään väliä, x ja y on vihollisen paikka ja speed sen nopeus, nopeus 0.1 on perus ja 0.2 yhtä nopea kuin pelaaja
 
 local enem = {}
 
