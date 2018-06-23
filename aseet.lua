@@ -111,6 +111,7 @@ Vz58.setQuad(love.graphics.newQuad(104,1,49,32, aseet:getDimensions()))
 TT33 = uusiase(5, 8, 0.6, 0.8, 6, 1, 0, 1)
 TT33.setTyyli("Pistooli")
 TT33.setQuad(love.graphics.newQuad(191,0,31,33, aseet:getDimensions()))
+TT33.setStorage(math.huge)--pistää arvoksi loputtomuuden
 Makarov = uusiase(6.5, 8, 0.6, 0.8, 5, 1, 1, 1)
 Makarov.setTyyli("Pistooli")
 Makarov.setQuad(love.graphics.newQuad(157,1,31,34, aseet:getDimensions()))

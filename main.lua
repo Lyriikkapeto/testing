@@ -1,5 +1,5 @@
 require("aseet")
-
+require("enemy")
 function love.load()
 	inventory = OletusInv
 	map = {
@@ -47,11 +47,14 @@ suunta=alas
 timer=true--onko ajastus mennyt yli
 counter=0 --laskee pikseletä kävelyssä
 bullets={}
+enemies={}
+vihollinen=enemy(100, 5, 5, 0.1)
+table.insert(enemies, vihollinen)
 end
 function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
 return ts*x, ts*y
 end
-function getNext(x,y, suunta)
+function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
 	if suunta==oikea then
 		if allowed[map[y][x+1]] then return true end
 	end
@@ -66,7 +69,9 @@ function getNext(x,y, suunta)
 	end
 return false
 end
+
 function love.draw()
+
 	
 	for y,xtaulukko in pairs(map) do --Piirtää mapin
 		for x,quadnumero in pairs(xtaulukko) do
@@ -74,7 +79,7 @@ function love.draw()
 		end
 	end
 	
-	love.graphics.draw(tileset, heads[suunta], px*ts, py*ts)
+	love.graphics.draw(tileset, heads[suunta], px*ts, py*ts) --piirtää pelaajan
 	if inventory.getBest()~=nil then --tämä tarkastaa onko asetta olemassa
 	inventory.getBest().printMag()
 	if suunta==oikea then --piirtää aseet riippuen suunnasta
@@ -83,22 +88,35 @@ function love.draw()
 	love.graphics.draw(aseet, inventory.getBest().getQuad(), px*ts+16, py*ts+18, 0, -0.5, 0.5) --riippuen suunnata vaihtaa aseen skaalaa
 	end
 	end
+	
 	for i,v in pairs(bullets) do
 		love.graphics.draw(luoti, v[1]*ts, v[2]*ts) --v[1]=x v[2]=y v[3]=suunta
+
 		v[1]=math.floor(v[1])
 		v[2]=math.floor(v[2])
-		print(v[1], v[2], v[3])
 			if getNext(v[1], v[2], v[3]) then
 				if v[3]==oikea then v[1]=v[1]+1
-				elseif v[3]==vasen then v[1]=v[1]-1
+				elseif v[3]==vasen then v[1]=v[1]-1 --kuvottavaa
 				elseif v[3]==ylos then v[2]=v[2]-1
 				elseif v[3]==alas then v[2]=v[2]+1 end
 			else
-				print("deleted")
 				bullets[i]=nil
 			end
+		for a,b in pairs(enemies) do --huono ratkaisu. nostaa rankasti kompleksiteettia
+			if b.x==v[1] and b.y==v[2] then
+				table.remove(enemies, a)
+				table.remove(bullets, i)
+			end
+		end
 	end
-	if throwsign then
+	for i,v in pairs(enemies) do --printtaa viholliset
+		love.graphics.draw(tileset, heads[v.dir], v.getPos()[1], v.getPos()[2])
+		if love.math.random(1,5) ~=5 then
+		v.walk()
+		end
+	end
+	
+	if throwsign then --piirtää tekstin ala reunaan
 		love.graphics.print(text, 5*ts, 16*ts, 0, 2, 2)
 	end
 end
@@ -177,6 +195,12 @@ end
 function love.keypressed( key, unicode )
 	if key=="space" then
 		inventory.getBest().shoot()
+	end
+	if key=="k" then
+		table.insert(enemies, enemy(100, 6, 6, 0.1))
+	end
+	if key=="m" then--xd
+		table.insert(enemies, monster(100, 6, 6, 0.1))
 	end
 end
 
