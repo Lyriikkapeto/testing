@@ -31,19 +31,20 @@ function love.load()
 	alas=1
 	oikea=3
 --suuntien numero koodit
+cooldown=0--assaultriflen cooldown
 suunta=alas
 timer=true--onko ajastus mennyt yli
 counter=0 --laskee pikseletä kävelyssä
 bullets={}
 enemies={}
-vihollinen=enemy(100, 5, 5, 0.1)
-table.insert(enemies, vihollinen)
+
 end
 function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
 return ts*x, ts*y
 end
 
 function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
+print(x,y)
 	if suunta==oikea then
 		if allowed[map[y][x+1]] then return true end
 	end
@@ -64,7 +65,10 @@ function mapChange(x,y,newmap)
 		opx, px=getmetatable(newmap).startpos[1], getmetatable(newmap).startpos[1]
 		opy, py=getmetatable(newmap).startpos[2], getmetatable(newmap).startpos[2]
 		bullets={}
-		enemies=getmetatable(newmap).enemies
+		enemies={}
+		for i,v in pairs(getmetatable(newmap).enemies) do
+			table.insert(enemies, v[1](v[2],v[3],v[4]))
+		end
 	end
 end
 function love.draw()
@@ -121,11 +125,14 @@ function love.draw()
 		--mapit kannattaa tallentaa maps.lua tiedostoon jotta tästä tulee paljon luettavampi
 	elseif map==map2 then
 		mapChange(23, 3, map3)
+	elseif map==map3 then
+		mapChange(23, 3, map4)--18,6 map4
 	end
 
 end
 
 function love.update(dt)
+cooldown=cooldown+dt
 	if love.keyboard.isDown("a") and timer then--timer on sitä varten ettei kävele liian lujaa
 		suunta=vasen
 		if allowed[map[py][px-1]] then --tarkastaa onko vasemman puolimmainen tile sallittu
@@ -191,20 +198,25 @@ function love.update(dt)
 			end
 		end
 	end
-	
+	if love.keyboard.isDown("space") and inventory.getBest().tyyli=="Rynnäkkökivääri" and cooldown>0.15 then
+		inventory.getBest().shoot()
+		cooldown=0
+	elseif love.keyboard.isDown("space") and inventory.getBest().tyyli=="Konepistooli" and cooldown>0.05 then
+		inventory.getBest().shoot()
+	end
 end
 function love.focus(bool)
 end
 
 function love.keypressed( key, unicode )
-	if key=="space" then
+	if key=="space" and inventory.getBest().tyyli=="Pistooli" then
 		inventory.getBest().shoot()
 	end
 	if key=="k" then
-		table.insert(enemies, enemy(100, 6, 6, 0.1))
+		table.insert(enemies, enemy(6, 6, 0.1))
 	end
 	if key=="m" then--xd
-		table.insert(enemies, monster(100, 6, 6, 0.1))
+		table.insert(enemies, monster(6, 6, 0.1))
 	end
 	if key=="r" then
 		inventory.getBest().load()

@@ -11,6 +11,9 @@ function inv()
 		if inv["Rynnäkkökivääri"]~=nil then
 			return inv["Rynnäkkökivääri"]
 		end
+		if inv["Konepistooli"]~=nil then
+			return inv["Konepistooli"]
+		end
 		if inv["Pistooli"]~=nil then
 			return inv["Pistooli"]
 		end
@@ -51,7 +54,7 @@ ase.shoot = function()
 		table.insert(bullets, {px, py, suunta})
     else
 	throwsign=true
-	text="Keep pressing space to reload: "..(ase.counter/2).."/"..(ase.kap/4)
+	text="Keep pressing space to reload: "..math.floor((ase.kap/2-ase.counter/2)-2)
 	if ase.storage>0 then
 		ase.counter = ase.counter+2
 		if ase.counter>=ase.kap then
@@ -63,6 +66,7 @@ ase.shoot = function()
 		end
 	else
 		print("out of ammo")
+		throwsign=false
 		OletusInv.delete(ase.tyyli)
 	end
     end
@@ -74,7 +78,7 @@ end
 FnFal = uusiase(20)
 FnFal.setTyyli("Rynnäkkökivääri")
 FnFal.setQuad(love.graphics.newQuad(0,1,47,39, aseet:getDimensions()))
-FnFal.setStorage(1)
+FnFal.setStorage(5)
 Vz61 = uusiase(20)
 Vz61.setTyyli("Konepistooli")
 
@@ -93,7 +97,7 @@ Makarov.setQuad(love.graphics.newQuad(157,1,31,34, aseet:getDimensions()))
 PPsh41 = uusiase(71)
 PPsh41.setTyyli("Konepistooli")
 PPsh41.setQuad(love.graphics.newQuad(49,0,51,40, aseet:getDimensions()))
-
+PPsh41.setStorage(1)
 puukko = uusiase(0)
 puukko.setTyyli("nil")
 puukko.setQuad(love.graphics.newQuad(200,0,3,3, aseet:getDimensions()))
@@ -101,3 +105,4 @@ puukko.setStorage(0)
 OletusInv = inv()
 OletusInv.setAse(FnFal)
 OletusInv.setAse(TT33)
+OletusInv.setAse(PPsh41)
