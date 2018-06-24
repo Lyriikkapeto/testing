@@ -7,7 +7,10 @@ function inv()
 	function inv.delete(index)
 		inv[index]=nil
 	end
-	function inv.getBest()--listaa käytettävissä olevat aseet
+	function inv.getGun(gun)
+		return inv[gun.tyyli]
+	end
+	function inv.getBest()--Valitsee aseen
 		if inv["Rynnäkkökivääri"]~=nil then
 			return inv["Rynnäkkökivääri"]
 		end
@@ -41,6 +44,7 @@ end
 ase.kap = kapas --kapasiteetti
 ase.lipas = kapas
 ase.storage=5--lippaiden määrä
+ase.getStorage=function() return ase.storage end
 ase.load=function() ase.lipas=0 end
 ase.setStorage=function(num) ase.storage=num end
 ase.counter=0

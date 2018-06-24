@@ -1,10 +1,11 @@
 function enemy(x, y, speed) -- x ja y on vihollisen paikka ja speed sen nopeus, nopeus 0.1 on perus ja 0.2 yhtä nopea kuin pelaaja
 
 local enem = {}
-
+if speed==nil then speed=0.1 end--jos speediä ei ole merkitty se on 0.1
 enem.x=x
 enem.y=y
 enem.timer=true
+enem.tyyli="Harmless"
 enem.xcount=x
 enem.ycount=y
 enem.speed=speed
@@ -56,6 +57,7 @@ return enem
 end
 function dangerenemy(x, y, speed)
 	local enem = enemy(x,y,speed)
+	enem.tyyli="Harmful"
 	enem.walk=function()--kävelee randomisti
 	if enem.x==px and enem.y==py then
 	mapChange(px,py,defmap)

@@ -2,6 +2,7 @@ require("aseet")
 require("enemy")
 require("maps")
 function love.load()
+	score=0
 	inventory = OletusInv
 	map = defmap --katso maps.lua
 	tileset = love.graphics.newImage("tileset.png")
@@ -18,11 +19,13 @@ function love.load()
 	quads[7] = love.graphics.newQuad(448, 443, ts, ts, tileset:getDimensions())--tyyppi
 	quads[8] = love.graphics.newQuad(ts*4, ts*20, ts, ts, tileset:getDimensions())--oksa
 	quads[9] = love.graphics.newQuad(320, 416, ts, ts, tileset:getDimensions())--harmaa
+	quads[10]=love.graphics.newQuad(96, 230, ts, ts, tileset:getDimensions()) --ovi
+	quads[11]=quads[10]
 	heads = {}--lataa tikkuukon päät
 	for i=1, 4 do
 		heads[i] = love.graphics.newQuad(ts*(10+i), 0, ts, ts, tileset:getDimensions())
 	end
-	allowed = {[2] = true, [1]=false, [3]=false, [4]=false, [5]=true, [6]=true, [7]=false, [8]=false, [0]=true}
+	allowed = {[2] = true, [1]=false, [3]=false, [4]=false, [5]=true, [6]=true, [7]=false, [8]=false, [0]=true, [10]=false, [11]=true}
 	px, py = 3, 3 --pelaajan x ja y tileissä
 	opx, opy = 3, 3 --muuttujat jotka tallentaa pelaajan position liikkumisen ajaksi
 --älä välitä 
@@ -37,14 +40,27 @@ timer=true--onko ajastus mennyt yli
 counter=0 --laskee pikseletä kävelyssä
 bullets={}
 enemies={}
-
+guns={}
 end
 function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
 return ts*x, ts*y
 end
-
+function getNextTile(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
+	if suunta==oikea then
+		return map[y][x+1], y, x+1
+	end
+	if suunta==vasen then
+		return map[y][x-1], y, x-1
+	end
+	if suunta==ylos then
+		return map[y-1][x], y-1, x
+	end
+	if suunta==alas then
+		return map[y+1][x], y+1, x
+	end
+return false
+end
 function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
-print(x,y)
 	if suunta==oikea then
 		if allowed[map[y][x+1]] then return true end
 	end
@@ -59,13 +75,26 @@ print(x,y)
 	end
 return false
 end
-function mapChange(x,y,newmap)
+function mapChange(x,y,newmap, startpos)
 	if px==x and py==y then
 		map=newmap
+		if not startpos then
 		opx, px=getmetatable(newmap).startpos[1], getmetatable(newmap).startpos[1]
 		opy, py=getmetatable(newmap).startpos[2], getmetatable(newmap).startpos[2]
+		else
+		for i,v in pairs(startpos) do
+		print(i,v)
+		end
+		opx,px = startpos[1], startpos[1]
+		opy,py=startpos[2], startpos[2]
+		print(px,py)
+		end
 		bullets={}
 		enemies={}
+		guns={}
+		if getmetatable(newmap).guns ~= nil then
+			table.insert(guns, getmetatable(newmap).guns)
+		end
 		for i,v in pairs(getmetatable(newmap).enemies) do
 			table.insert(enemies, v[1](v[2],v[3],v[4]))
 		end
@@ -105,8 +134,14 @@ function love.draw()
 			end
 		for a,b in pairs(enemies) do --huono ratkaisu. nostaa rankasti kompleksiteettia
 			if b.x==v[1] and b.y==v[2] then
+				if b.type="Harmless" then
+				score=score+100
+				elseif b.type="Harmful" then
+				score=score+150
+				end
 				table.remove(enemies, a)
 				table.remove(bullets, i)
+				
 			end
 		end
 	end
@@ -116,7 +151,18 @@ function love.draw()
 		v.walk()
 		end
 	end
-	
+	for i,v in pairs(guns) do
+		love.graphics.draw(aseet, v[1].getQuad(), v[2]*32, v[3]*32,0, 0.7, 0.7)
+		if px==v[2] and py==v[3] then
+			OletusInv.setAse(v[1])
+			if inventory.getGun(v[1]) then
+			OletusInv.getGun(v[1]).setStorage(OletusInv.getGun(v[1]).getStorage()+v[4])
+			else
+			OletusInv.getGun(v[1]).setStorage(v[4])
+			end
+			guns[i]=nil
+		end
+	end
 	if throwsign then --piirtää tekstin ala reunaan
 		love.graphics.print(text, 5*ts, 16*ts, 0, 2, 2)
 	end
@@ -126,7 +172,14 @@ function love.draw()
 	elseif map==map2 then
 		mapChange(23, 3, map3)
 	elseif map==map3 then
-		mapChange(23, 3, map4)--18,6 map4
+		mapChange(23, 3, map4)
+	elseif map==map4 then
+		mapChange(18,6, map5_7)
+	elseif map==map5_7 then
+		mapChange(3,3, map6)
+		mapChange(3,11, defmap)
+	elseif map==map6 then
+		mapChange(18,12, map5_7, {3, 13})
 	end
 
 end
@@ -212,16 +265,56 @@ function love.keypressed( key, unicode )
 	if key=="space" and inventory.getBest().tyyli=="Pistooli" then
 		inventory.getBest().shoot()
 	end
-	if key=="k" then
-		table.insert(enemies, enemy(6, 6, 0.1))
-	end
-	if key=="m" then--xd
-		table.insert(enemies, monster(6, 6, 0.1))
+	if key=="e" then
+		local tile, y, x = getNextTile(px, py, suunta)
+		if tile==10 then
+			map[y][x]=11
+		end
 	end
 	if key=="r" then
 		inventory.getBest().load()
 	end
-end
+	if key=="1" then --Aseenvaihto 1=rynkky 2=konepistooli --3 pistooli
+		inventory.getBest =	function()
+		if inventory["Rynnäkkökivääri"]~=nil then
+			return inventory["Rynnäkkökivääri"]
+		end
+		if inventory["Konepistooli"]~=nil then
+			return inventory["Konepistooli"]
+		end
+		if inventory["Pistooli"]~=nil then
+			return inventory["Pistooli"]
+		end
+			return puukko
+	end
+	elseif key=="2" then
+		inventory.getBest=function()
+		if inventory["Konepistooli"]~=nil then
+			return inventory["Konepistooli"]
+		end
+		if inventory["Rynnäkkökivääri"]~=nil then
+			return inventory["Rynnäkkökivääri"]
+		end
+		if inventory["Pistooli"]~=nil then
+			return inventory["Pistooli"]
+		end
+			return puukko
+		end
+	elseif key=="3" then
+		inventory.getBest=function()
+		if inventory["Pistooli"]~=nil then
+			return inventory["Pistooli"]
+		end
+		if inventory["Rynnäkkökivääri"]~=nil then
+			return inventory["Rynnäkkökivääri"]
+		end
+		if inventory["Konepistooli"]~=nil then
+			return inventory["Konepistooli"]
+		end
+			return puukko
+		end
+	end
+	end
 
 
 function love.keyreleased( key, unicode )
