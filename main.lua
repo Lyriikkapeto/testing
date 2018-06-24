@@ -78,6 +78,11 @@ end
 function mapChange(x,y,newmap, startpos)
 	if px==x and py==y then
 		map=newmap
+		for y,x in pairs(map) do
+			for i,v in pairs(map[y]) do
+				if v==11 then map[y][i]=10 end
+			end
+		end
 		if not startpos then
 		opx, px=getmetatable(newmap).startpos[1], getmetatable(newmap).startpos[1]
 		opy, py=getmetatable(newmap).startpos[2], getmetatable(newmap).startpos[2]
