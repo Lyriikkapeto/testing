@@ -61,6 +61,10 @@ function dangerenemy(x, y, speed)
 	enem.walk=function()--kävelee randomisti
 	if enem.x==px and enem.y==py then
 	mapChange(px,py,defmap)
+	inventory=inv()
+	inventory.setAse(TT33)
+	OletusInv=inventory
+
 	end
 	if getNext(enem.x,enem.y,enem.dir) then
 			if enem.dir==oikea then
@@ -79,6 +83,9 @@ function dangerenemy(x, y, speed)
 					enem.dir=vasen
 				else
 					mapChange(px,py, defmap)
+					inventory=inv()
+					inventory.setAse(TT33)
+					OletusInv=inventory
 				end
 			end
 			elseif enem.dir==vasen then
@@ -97,6 +104,9 @@ function dangerenemy(x, y, speed)
 					enem.dir=vasen
 				else
 					mapChange(px,py, defmap)
+					inventory=inv()
+					inventory.setAse(TT33)
+					OletusInv=inventory
 				end
 			end
 			elseif enem.dir==ylos then
@@ -115,6 +125,9 @@ function dangerenemy(x, y, speed)
 					enem.dir=ylos
 				else
 					mapChange(px,py, defmap)
+					inventory=inv()
+					inventory.setAse(TT33)
+					OletusInv=inventory
 				end
 
 			end
@@ -134,6 +147,9 @@ function dangerenemy(x, y, speed)
 					enem.dir=ylos
 				else
 					mapChange(px,py, defmap)
+					inventory=inv()
+					inventory.setAse(TT33)
+					OletusInv=inventory
 				end
 			end
 			end
