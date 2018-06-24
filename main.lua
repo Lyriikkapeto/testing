@@ -101,7 +101,7 @@ function mapChange(x,y,newmap, startpos)
 	end
 end
 function love.draw()
-
+love.graphics.print("Score: "..score, 28*ts,17*ts)
 	
 	for y,xtaulukko in pairs(map) do --Piirtää mapin
 		for x,quadnumero in pairs(xtaulukko) do
@@ -126,17 +126,17 @@ function love.draw()
 		v[2]=math.floor(v[2])
 			if getNext(v[1], v[2], v[3]) then
 				if v[3]==oikea then v[1]=v[1]+1
-				elseif v[3]==vasen then v[1]=v[1]-1 --kuvottavaa
+				elseif v[3]==vasen then v[1]=v[1]-1
 				elseif v[3]==ylos then v[2]=v[2]-1
 				elseif v[3]==alas then v[2]=v[2]+1 end
 			else
 				table.remove(bullets, i)
 			end
-		for a,b in pairs(enemies) do --huono ratkaisu. nostaa rankasti kompleksiteettia
+		for a,b in pairs(enemies) do
 			if b.x==v[1] and b.y==v[2] then
-				if b.type="Harmless" then
+				if b.tyyli=="Harmless" then
 				score=score+100
-				elseif b.type="Harmful" then
+				elseif b.tyyli=="Harmful" then
 				score=score+150
 				end
 				table.remove(enemies, a)
