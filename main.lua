@@ -61,6 +61,7 @@ function getNextTile(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapa
 return false
 end
 function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
+if map then
 	if suunta==oikea then
 		if allowed[map[y][x+1]] then return true end
 	end
@@ -73,6 +74,7 @@ function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
 	if suunta==alas then
 		if allowed[map[y+1][x]] then return true end
 	end
+end
 return false
 end
 function mapChange(x,y,newmap, startpos)
