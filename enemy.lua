@@ -16,7 +16,7 @@ enem.dir=love.math.random(1,4) --suunta
 enem.walk=function()--kävelee randomisti
 	if getNext(enem.x,enem.y,enem.dir) then
 			if enem.dir==oikea then
-				enem.xcount=enem.xcount+enem.speed
+				enem.xcount=enem.xcount+(enem.speed*_G.dt*59)
 			if enem.xcount>=enem.opx+1 then
 				enem.xcount=enem.opx+1
 				enem.x=enem.opx+1
@@ -24,7 +24,7 @@ enem.walk=function()--kävelee randomisti
 				enem.dir = love.math.random(1,4)
 			end
 			elseif enem.dir==vasen then
-			enem.xcount=enem.xcount-enem.speed
+			enem.xcount=enem.xcount-(enem.speed*_G.dt*59)
 			if enem.xcount<=enem.opx-1 then
 				enem.xcount=enem.opx-1
 				enem.x=enem.opx-1
@@ -32,7 +32,7 @@ enem.walk=function()--kävelee randomisti
 				enem.dir = love.math.random(1,4)
 			end
 			elseif enem.dir==ylos then
-			enem.ycount=enem.ycount-enem.speed
+			enem.ycount=enem.ycount-(enem.speed*_G.dt*59)
 			if enem.ycount<=enem.opy-1 then
 				enem.ycount=enem.opy-1
 				enem.y=enem.opy-1
@@ -41,7 +41,7 @@ enem.walk=function()--kävelee randomisti
 
 			end
 			elseif enem.dir==alas then
-			enem.ycount=enem.ycount+enem.speed
+			enem.ycount=enem.ycount+(enem.speed*_G.dt*59)
 			if enem.ycount>=enem.opy+1 then
 				enem.ycount=enem.opy+1
 				enem.y=enem.opy+1
@@ -68,7 +68,7 @@ function dangerenemy(x, y, speed)
 	end
 	if getNext(enem.x,enem.y,enem.dir) then
 			if enem.dir==oikea then
-				enem.xcount=enem.xcount+enem.speed
+				enem.xcount=enem.xcount+(enem.speed*_G.dt*59)
 			if enem.xcount>=enem.opx+1 then
 				enem.xcount=enem.opx+1
 				enem.x=enem.opx+1
@@ -89,7 +89,7 @@ function dangerenemy(x, y, speed)
 				end
 			end
 			elseif enem.dir==vasen then
-			enem.xcount=enem.xcount-enem.speed
+			enem.xcount=enem.xcount-(enem.speed*_G.dt*59)
 			if enem.xcount<=enem.opx-1 then
 				enem.xcount=enem.opx-1
 				enem.x=enem.opx-1
@@ -110,7 +110,7 @@ function dangerenemy(x, y, speed)
 				end
 			end
 			elseif enem.dir==ylos then
-			enem.ycount=enem.ycount-enem.speed
+			enem.ycount=enem.ycount-(enem.speed*_G.dt*59)
 			if enem.ycount<=enem.opy-1 then
 				enem.ycount=enem.opy-1
 				enem.y=enem.opy-1
@@ -132,7 +132,7 @@ function dangerenemy(x, y, speed)
 
 			end
 			elseif enem.dir==alas then
-			enem.ycount=enem.ycount+enem.speed
+			enem.ycount=enem.ycount+(enem.speed*_G.dt*59)
 			if enem.ycount>=enem.opy+1 then
 				enem.ycount=enem.opy+1
 				enem.y=enem.opy+1

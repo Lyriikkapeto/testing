@@ -191,6 +191,7 @@ love.graphics.print("Score: "..score, 28*ts,17*ts)
 end
 
 function love.update(dt)
+_G.dt = dt
 cooldown=cooldown+dt
 	if love.keyboard.isDown("a") and timer then--timer on sitä varten ettei kävele liian lujaa
 		suunta=vasen
@@ -227,21 +228,21 @@ cooldown=cooldown+dt
 	end
 	if not timer then
 		if suunta==vasen then
-			px=px-0.2
+			px=px-(0.2*dt*59)
 			if px<=opx-1 then
 			timer=true
 			px=opx-1
 			end
 		end
 		if suunta==oikea then
-			px=px+0.2
+			px=px+(0.2*dt*59)
 			if px>=opx+1 then
 			timer=true
 			px=opx+1
 			end
 		end
 		if suunta==ylos then
-			py=py-0.2
+			py=py-(0.2*dt*59)
 			if py<=opy-1 then
 				timer=true
 				py=opy-1
@@ -249,7 +250,7 @@ cooldown=cooldown+dt
 			end
 		end
 		if suunta==alas then
-			py=py+0.2
+			py=py+(0.2*dt*59)
 			if py>=opy+1 then
 				timer=true
 				py=opy+1
