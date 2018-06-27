@@ -76,6 +76,7 @@ function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
 return false
 end
 function mapChange(x,y,newmap, startpos)
+if newmap==defmap then score=0 end
 	if px==x and py==y then
 		map=newmap
 		for y,x in pairs(map) do
@@ -182,7 +183,7 @@ love.graphics.print("Score: "..score, 28*ts,17*ts)
 		mapChange(18,6, map5_7)
 	elseif map==map5_7 then
 		mapChange(3,3, map6)
-		mapChange(3,11, defmap)
+		mapChange(3,11, map8)
 	elseif map==map6 then
 		mapChange(18,12, map5_7, {3, 13})
 	end
