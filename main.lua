@@ -46,18 +46,32 @@ function tilePos(x,y)--oalauttaa oikean position mappiposition pohjalta
 return ts*x, ts*y
 end
 function getNextTile(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
+if map ~= nil then
 	if suunta==oikea then
+	x=math.ceil(x)
+		print(map)
+	print(map[y-1], y, x)
 		return map[y][x+1], y, x+1
 	end
 	if suunta==vasen then
+	x=math.floor(x)
+		print(map)
+	print(map[y-1], y, x)
 		return map[y][x-1], y, x-1
 	end
 	if suunta==ylos then
+	y=math.floor(y)
+	print(map)
+	print(map[y-1], y, x)
 		return map[y-1][x], y-1, x
 	end
 	if suunta==alas then
+	y=math.ceil(y)
+	print(map)
+	print(map[y-1], y, x)
 		return map[y+1][x], y+1, x
 	end
+end
 return false
 end
 function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
