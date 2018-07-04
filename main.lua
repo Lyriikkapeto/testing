@@ -2,6 +2,9 @@ require("aseet")
 require("enemy")
 require("maps")
 function love.load()
+--define
+sec = function() return (_G.dt*59) end
+--
 	score=0
 	inventory = OletusInv
 	map = defmap --katso maps.lua
@@ -49,26 +52,18 @@ function getNextTile(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapa
 if map ~= nil then
 	if suunta==oikea then
 	x=math.ceil(x)
-		print(map)
-	print(map[y-1], y, x)
 		return map[y][x+1], y, x+1
 	end
 	if suunta==vasen then
 	x=math.floor(x)
-		print(map)
-	print(map[y-1], y, x)
 		return map[y][x-1], y, x-1
 	end
 	if suunta==ylos then
 	y=math.floor(y)
-	print(map)
-	print(map[y-1], y, x)
 		return map[y-1][x], y-1, x
 	end
 	if suunta==alas then
 	y=math.ceil(y)
-	print(map)
-	print(map[y-1], y, x)
 		return map[y+1][x], y+1, x
 	end
 end
@@ -147,15 +142,16 @@ love.graphics.print("Score: "..score, 28*ts,17*ts)
 		v[1]=math.floor(v[1])
 		v[2]=math.floor(v[2])
 			if getNext(v[1], v[2], v[3]) then
-				if v[3]==oikea then v[1]=v[1]+1
-				elseif v[3]==vasen then v[1]=v[1]-1
-				elseif v[3]==ylos then v[2]=v[2]-1
-				elseif v[3]==alas then v[2]=v[2]+1 end
+			print(sec())
+				if v[3]==oikea then v[1]=v[1]+sec() --lisää dt
+				elseif v[3]==vasen then v[1]=v[1]-sec() --sec on nopeus suhteutenn
+				elseif v[3]==ylos then v[2]=v[2]-sec()
+				elseif v[3]==alas then v[2]=v[2]+sec() end
 			else
 				table.remove(bullets, i)
 			end
 		for a,b in pairs(enemies) do
-			if b.x==v[1] and b.y==v[2] then
+			if b.x==math.floor(v[1]+0.5) and b.y==math.floor(v[2]+0.5) then --math.floor(x+0.5) on normaali pyörentäminen
 				if b.tyyli=="Harmless" then
 				score=score+100
 				elseif b.tyyli=="Harmful" then

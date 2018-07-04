@@ -1,0 +1,4 @@
+Aloituskohta-> (1,5)
+Viholliset-> (5,6) (7,8) (9,10)
+Jahtaavatviholliset->(x, y)
+Mapinvaihto->(Mapin nimi, x, y)
