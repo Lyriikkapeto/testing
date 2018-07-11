@@ -142,7 +142,6 @@ love.graphics.print("Score: "..score, 28*ts,17*ts)
 		v[1]=math.floor(v[1])
 		v[2]=math.floor(v[2])
 			if getNext(v[1], v[2], v[3]) then
-			print(sec())
 				if v[3]==oikea then v[1]=v[1]+sec() --lisää dt
 				elseif v[3]==vasen then v[1]=v[1]-sec() --sec on nopeus suhteutenn
 				elseif v[3]==ylos then v[2]=v[2]-sec()
