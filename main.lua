@@ -70,6 +70,8 @@ end
 return false
 end
 function getNext(x,y, suunta) --tarkastaa onko seuraava tilee suunnassa vapaa
+x = math.floor(x+0.5)
+y= math.floor(y+0.5)
 if map then
 	if suunta==oikea then
 		if allowed[map[y][x+1]] then return true end
