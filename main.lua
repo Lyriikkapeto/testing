@@ -142,8 +142,8 @@ love.graphics.print("Score: "..score, 28*ts,17*ts)
 	for i,v in pairs(bullets) do
 		love.graphics.draw(luoti, v[1]*ts, v[2]*ts) --v[1]=x v[2]=y v[3]=suunta
 
-		v[1]=math.floor(v[1])
-		v[2]=math.floor(v[2])
+		v[1]=math.floor(v[1]+0.5)
+		v[2]=math.floor(v[2]+0.5)
 			if getNext(v[1], v[2], v[3]) then
 				if v[3]==oikea then v[1]=v[1]+sec() --lisää dt
 				elseif v[3]==vasen then v[1]=v[1]-sec() --sec on nopeus suhteutenn
